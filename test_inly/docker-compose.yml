@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15.2
+    container_name: db_app
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+
+
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    container_name: test_task_InlyIT
+    command: sh -c "alembic upgrade head && python main.py"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
